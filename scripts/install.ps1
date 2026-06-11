@@ -41,12 +41,21 @@ function Detect-Providers {
 
 function Install-Claude {
     param([string]$SkillName, [string]$Scope)
-    $src = Join-Path $SkillsDir $SkillName
-    $dest = if ($Scope -eq 'global') { Join-Path $HOME '.claude\skills\' + $SkillName }
-            else                     { Join-Path (Get-Location) '.claude\skills\' + $SkillName }
-    New-Item -ItemType Directory -Path $dest -Force | Out-Null
-    Copy-Item -Path "$src\*" -Destination $dest -Recurse -Force
-    Write-Host "  [OK] Installed to $dest"
+    $src  = Join-Path $SkillsDir "$SkillName\skill.md"
+    $base = if ($Scope -eq 'global') { Join-Path $HOME '.claude' }
+            else                     { Join-Path (Get-Location) '.claude' }
+
+    # commands/ → native slash command (works without superpowers)
+    $cmdDest = Join-Path $base "commands\$SkillName.md"
+    New-Item -ItemType Directory -Path (Split-Path $cmdDest) -Force | Out-Null
+    Copy-Item -Path $src -Destination $cmdDest -Force
+    Write-Host "  [OK] Installed to $cmdDest"
+
+    # skills/ → discovery via superpowers Skill tool
+    $skillDest = Join-Path $base "skills\$SkillName\skill.md"
+    New-Item -ItemType Directory -Path (Split-Path $skillDest) -Force | Out-Null
+    Copy-Item -Path $src -Destination $skillDest -Force
+    Write-Host "  [OK] Installed to $skillDest"
 }
 
 function Install-Gemini {

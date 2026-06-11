@@ -2,10 +2,14 @@
 
 ## Installing skills
 
-Place skill files in `~/.claude/skills/<skill-name>/skill.md` for global use,
-or `.claude/skills/<skill-name>/skill.md` for project-local use.
+The installer copies each skill to two locations:
 
-Invoke via the `Skill` tool or `/<skill-name>` slash command in Claude Code.
+| Path | How it works |
+|------|-------------|
+| `~/.claude/commands/<name>.md` | Native slash command (`/<name>`), no plugin needed |
+| `~/.claude/skills/<name>/skill.md` | Discovered by superpowers `Skill` tool |
+
+For project-local install, replace `~/` with the project root.
 
 ## Tool name mapping
 
@@ -19,6 +23,5 @@ Invoke via the `Skill` tool or `/<skill-name>` slash command in Claude Code.
 
 ## Notes
 
-- Skills loaded from `~/.claude/skills/` are available in all projects
-- Skills in `.claude/skills/` are project-local
-- The `Skill` tool loads skill content on demand — always reads the current version
+- With superpowers: invoke via `Skill` tool or `/<name>` slash command
+- Without superpowers: invoke via `/<name>` slash command only
