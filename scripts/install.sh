@@ -7,6 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_DIR="$REPO_ROOT/kit/skills"
+FRAGMENTS_DIR="$REPO_ROOT/kit/fragments"
 
 # ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -132,6 +133,44 @@ install_codex() {
   echo "  See kit/references/codex.md for details."
 }
 
+# ── fragment append ───────────────────────────────────────────────────────────
+
+# Append provider-specific fragments for a skill into the project's agent config file.
+# Idempotent: skips if the fragment marker is already present.
+append_fragments() {
+  skill_name="$1"
+  provider="$2"
+  scope="$3"
+
+  # fragments only make sense for project scope
+  [ "$scope" = "project" ] || return 0
+
+  fragment="$FRAGMENTS_DIR/${skill_name}.${provider}.md"
+  [ -f "$fragment" ] || return 0
+
+  case "$provider" in
+    claude)   config_file="$(pwd)/CLAUDE.md" ;;
+    gemini)   config_file="$(pwd)/GEMINI.md" ;;
+    windsurf) config_file="$(pwd)/.windsurfrules" ;;
+    codex)    config_file="$(pwd)/AGENTS.md" ;;
+    *)        return 0 ;;
+  esac
+
+  # Use a unique marker from the fragment's first heading as idempotency key
+  marker="$(grep -m1 '^#' "$fragment" | sed 's/^#* *//')"
+  if [ -z "$marker" ]; then
+    marker="$(head -2 "$fragment" | tail -1 | tr -d ' ')"
+  fi
+
+  if grep -qF "$marker" "$config_file" 2>/dev/null; then
+    echo "  ↳ Fragment already present in $(basename "$config_file"), skipping" >&2
+    return 0
+  fi
+
+  cat "$fragment" >> "$config_file"
+  echo "  ✓ Appended ADR fragment to $(basename "$config_file")" >&2
+}
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 PROVIDER=""
@@ -199,6 +238,7 @@ for skill in $skills_to_install; do
     windsurf)  install_windsurf  "$skill" "$SCOPE" ;;
     *)      printf '  ✗ Unknown provider: %s\n' "$PROVIDER" >&2 ;;
   esac
+  append_fragments "$skill" "$PROVIDER" "$SCOPE"
 done
 
 echo "" >&2

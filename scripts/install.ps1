@@ -7,9 +7,10 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$RepoRoot  = Split-Path -Parent $ScriptDir
-$SkillsDir = Join-Path $RepoRoot 'kit\skills'
+$ScriptDir    = Split-Path -Parent $MyInvocation.MyCommand.Path
+$RepoRoot     = Split-Path -Parent $ScriptDir
+$SkillsDir    = Join-Path $RepoRoot 'kit\skills'
+$FragmentsDir = Join-Path $RepoRoot 'kit\fragments'
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -99,6 +100,40 @@ function Install-Codex {
     Write-Host "  See kit/references/codex.md for details."
 }
 
+# ── fragment append ───────────────────────────────────────────────────────────
+
+function Append-Fragments {
+    param([string]$SkillName, [string]$ProviderName, [string]$Scope)
+
+    if ($Scope -ne 'project') { return }
+
+    $fragment = Join-Path $FragmentsDir "${SkillName}.${ProviderName}.md"
+    if (-not (Test-Path $fragment)) { return }
+
+    $configFile = switch ($ProviderName) {
+        'claude'   { Join-Path (Get-Location) 'CLAUDE.md' }
+        'gemini'   { Join-Path (Get-Location) 'GEMINI.md' }
+        'windsurf' { Join-Path (Get-Location) '.windsurfrules' }
+        'codex'    { Join-Path (Get-Location) 'AGENTS.md' }
+        default    { return }
+    }
+
+    $fragmentContent = Get-Content $fragment -Raw
+    $marker = ($fragmentContent -split "`n" | Where-Object { $_ -match '^#' } | Select-Object -First 1) -replace '^#+ *', ''
+    if (-not $marker) {
+        $marker = ($fragmentContent -split "`n" | Select-Object -Skip 1 -First 1).Trim()
+    }
+
+    $existing = if (Test-Path $configFile) { Get-Content $configFile -Raw } else { '' }
+    if ($existing -and $existing.Contains($marker)) {
+        Write-Host "  [SKIP] Fragment already present in $(Split-Path $configFile -Leaf)"
+        return
+    }
+
+    Add-Content -Path $configFile -Value $fragmentContent
+    Write-Host "  [OK] Appended ADR fragment to $(Split-Path $configFile -Leaf)"
+}
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 Write-Host ""
@@ -158,6 +193,7 @@ foreach ($s in $skillsToInstall) {
         'windsurf'  { Install-Windsurf  $s $Scope }
         default  { Write-Host "  [FAIL] Unknown provider: $Provider" -ForegroundColor Red }
     }
+    Append-Fragments $s $Provider $Scope
 }
 
 Write-Host ""
