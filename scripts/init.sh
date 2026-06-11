@@ -22,10 +22,7 @@ fi
 
 mkdir -p "$TARGET"
 
-cp -r "$EXAMPLE_DIR/." "$TARGET/"
-
-# Remove .gitkeep files — they exist only to preserve empty dirs in git
-find "$TARGET" -name ".gitkeep" -delete
+rsync -a --exclude="README.md" --exclude=".gitkeep" "$EXAMPLE_DIR/" "$TARGET/"
 
 echo "Project structure initialized at: $TARGET"
 echo ""

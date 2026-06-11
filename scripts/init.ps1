@@ -18,10 +18,17 @@ if (-not (Test-Path $ExampleDir -PathType Container)) {
 
 New-Item -ItemType Directory -Path $Target -Force | Out-Null
 
-Copy-Item -Path "$ExampleDir\*" -Destination $Target -Recurse -Force
-
-# Remove .gitkeep files — they exist only to preserve empty dirs in git
-Get-ChildItem -Path $Target -Filter '.gitkeep' -Recurse -Force | Remove-Item -Force
+Get-ChildItem -Path $ExampleDir -Recurse | Where-Object {
+    -not $_.PSIsContainer -and
+    $_.Name -ne 'README.md' -and
+    $_.Name -ne '.gitkeep'
+} | ForEach-Object {
+    $rel  = $_.FullName.Substring($ExampleDir.Length + 1)
+    $dest = Join-Path $Target $rel
+    $dir  = Split-Path $dest -Parent
+    if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+    Copy-Item -Path $_.FullName -Destination $dest -Force
+}
 
 Write-Host "Project structure initialized at: $Target"
 Write-Host ""
