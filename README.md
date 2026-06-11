@@ -12,12 +12,11 @@ git clone <repo-url> ai-development
 ./ai-development/scripts/init.sh /path/to/your/project
 ```
 
-**2. Install the ADR writer skill** for your AI provider:
+**2. Install skills** for your AI provider:
+```bash
+./ai-development/scripts/install.sh
 ```
-→ Claude Code:  see kit/references/claude.md
-→ Gemini CLI:   see kit/references/gemini.md
-→ Codex:        see kit/references/codex.md
-```
+The script detects installed providers, asks which skill to install, and whether to install globally or per-project. Manual reference: `kit/references/`.
 
 **3. Start small.** Open `docs/guide.md` and follow Phase 0 — README, glossary, specs, and ADRs are all you need to begin.
 

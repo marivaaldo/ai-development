@@ -28,7 +28,8 @@ cp -r "$EXAMPLE_DIR/." "$TARGET/"
 find "$TARGET" -name ".gitkeep" -delete
 
 echo "Project structure initialized at: $TARGET"
+echo ""
 echo "Next steps:"
 echo "  1. Review docs/guide.md for the maturity roadmap"
-echo "  2. Install the adr-writer skill (see kit/references/ for your provider)"
+echo "  2. Install skills: ./scripts/install.sh"
 echo "  3. Start with Phase 0 — don't create structure you don't need yet"
