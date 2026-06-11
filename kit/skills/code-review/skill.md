@@ -5,6 +5,7 @@ providers:
   claude: native
   gemini: see kit/references/gemini.md
   codex: see kit/references/codex.md
+  windsurf: see kit/references/windsurf.md
 ---
 
 # Code Review

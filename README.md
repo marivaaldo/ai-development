@@ -47,7 +47,7 @@ git submodule add <repo-url> ai-development
 
 ## Supported providers
 
-Skills work with: **Claude Code · Gemini CLI · Codex · Copilot CLI**
+Skills work with: **Claude Code · Gemini CLI · Codex · Copilot CLI · Windsurf**
 
 See `kit/references/` for provider-specific installation instructions.
 

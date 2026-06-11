@@ -39,9 +39,10 @@ list_skills() {
 
 detect_providers() {
   detected=""
-  command -v claude >/dev/null 2>&1 && detected="$detected claude"
-  command -v gemini >/dev/null 2>&1 && detected="$detected gemini"
-  command -v codex  >/dev/null 2>&1 && detected="$detected codex"
+  command -v claude    >/dev/null 2>&1 && detected="$detected claude"
+  command -v gemini    >/dev/null 2>&1 && detected="$detected gemini"
+  command -v codex     >/dev/null 2>&1 && detected="$detected codex"
+  command -v windsurf  >/dev/null 2>&1 && detected="$detected windsurf"
   echo "$detected"
 }
 
@@ -84,6 +85,23 @@ install_gemini() {
   echo "    @$dest/skill.md"
   echo ""
   echo "  See kit/references/gemini.md for details."
+}
+
+install_windsurf() {
+  skill_name="$1"
+  scope="$2"
+  skill_src="$SKILLS_DIR/$skill_name"
+
+  # Windsurf only supports project-scope (.windsurf/skills/)
+  if [ "$scope" = "global" ]; then
+    echo "  ⚠ Windsurf does not support global skill installation." >&2
+    echo "  Installing project-scoped instead." >&2
+  fi
+  dest="$(pwd)/.windsurf/skills/$skill_name"
+
+  mkdir -p "$dest"
+  cp -r "$skill_src/." "$dest/"
+  echo "  ✓ Installed to $dest"
 }
 
 install_codex() {
@@ -129,7 +147,7 @@ if [ -z "$PROVIDER" ]; then
     echo "Detected providers:$detected" >&2
     echo "" >&2
   fi
-  PROVIDER="$(prompt_choice "Provider" claude gemini codex)"
+  PROVIDER="$(prompt_choice "Provider" claude gemini codex windsurf)"
 fi
 
 # Ask scope
@@ -163,9 +181,10 @@ for skill in $skills_to_install; do
   fi
   printf 'Installing %s for %s (%s)...\n' "$skill" "$PROVIDER" "$SCOPE" >&2
   case "$PROVIDER" in
-    claude) install_claude "$skill" "$SCOPE" ;;
-    gemini) install_gemini "$skill" "$SCOPE" ;;
-    codex)  install_codex  "$skill" "$SCOPE" ;;
+    claude)    install_claude    "$skill" "$SCOPE" ;;
+    gemini)    install_gemini    "$skill" "$SCOPE" ;;
+    codex)     install_codex     "$skill" "$SCOPE" ;;
+    windsurf)  install_windsurf  "$skill" "$SCOPE" ;;
     *)      printf '  ✗ Unknown provider: %s\n' "$PROVIDER" >&2 ;;
   esac
 done
