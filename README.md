@@ -1,6 +1,27 @@
 # ai-development
 
-Provider-agnostic collection of skills, prompts, templates, and patterns for AI-first projects.
+A collection of skills, prompts, templates, and patterns for AI-first projects — provider-agnostic (Claude Code, Gemini CLI, Codex, Copilot CLI).
+
+This is not a framework. It is a kit you adopt into your own project, taking only what you need.
+
+## Quick start
+
+**1. Scaffold a new project:**
+```bash
+git clone <repo-url> ai-development
+./ai-development/scripts/init.sh /path/to/your/project
+```
+
+**2. Install the ADR writer skill** for your AI provider:
+```
+→ Claude Code:  see kit/references/claude.md
+→ Gemini CLI:   see kit/references/gemini.md
+→ Codex:        see kit/references/codex.md
+```
+
+**3. Start small.** Open `docs/guide.md` and follow Phase 0 — README, glossary, specs, and ADRs are all you need to begin.
+
+---
 
 ## Contents
 
