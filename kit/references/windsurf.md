@@ -1,8 +1,19 @@
-# Windsurf (Devin) — Provider Reference
+# Windsurf — Provider Reference
+
+## Directory structure
+
+| Scope   | Path |
+|---------|------|
+| Project | `.windsurf/` |
+| Global  | `~/.codeium/windsurf/` |
+
+Skills, workflows (commands), and other configuration live inside these directories.
 
 ## Installing skills
 
-Skills are project-scoped only. Place skill files at:
+### Project-scoped
+
+Place skill files at:
 
 ```
 .windsurf/skills/<skill-name>/skill.md
@@ -13,6 +24,27 @@ Use the install script to do this automatically:
 ```bash
 ./scripts/install.sh --provider windsurf --skill adr-writer
 ```
+
+### Global (available in all workspaces)
+
+Place skill files at:
+
+```
+~/.codeium/windsurf/skills/<skill-name>/skill.md
+```
+
+Pass `--global` to the install script:
+
+```bash
+./scripts/install.sh --provider windsurf --global --skill adr-writer
+```
+
+## Workflows (commands)
+
+Windsurf uses **workflows** instead of slash commands. Place workflow files at:
+
+- Project: `.windsurf/workflows/<workflow-name>.md`
+- Global: `~/.codeium/windsurf/workflows/<workflow-name>.md`
 
 ## Tool name mapping
 
@@ -26,5 +58,4 @@ Use the install script to do this automatically:
 
 ## Notes
 
-- Windsurf does not support global skill installation — skills are always project-local
 - Skill content is provider-agnostic; no changes to `skill.md` are needed

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Installs skills from kit/skills/ into the appropriate location for a given AI provider.
-# Usage: ./scripts/install.sh [--provider <claude|gemini|codex>] [--skill <name>]
+# Usage: ./scripts/install.sh [--provider <claude|gemini|codex|windsurf>] [--skill <name>]
 
 set -e
 
@@ -92,12 +92,11 @@ install_windsurf() {
   scope="$2"
   skill_src="$SKILLS_DIR/$skill_name"
 
-  # Windsurf only supports project-scope (.windsurf/skills/)
   if [ "$scope" = "global" ]; then
-    echo "  ⚠ Windsurf does not support global skill installation." >&2
-    echo "  Installing project-scoped instead." >&2
+    dest="$HOME/.codeium/windsurf/skills/$skill_name"
+  else
+    dest="$(pwd)/.windsurf/skills/$skill_name"
   fi
-  dest="$(pwd)/.windsurf/skills/$skill_name"
 
   mkdir -p "$dest"
   cp -r "$skill_src/." "$dest/"
@@ -153,7 +152,11 @@ fi
 # Ask scope
 echo "" >&2
 SCOPE="$(prompt_choice "Install scope" global project)"
-echo "  global = ~/.$PROVIDER/skills  |  project = ./.${PROVIDER}/skills" >&2
+if [ "$PROVIDER" = "windsurf" ]; then
+  echo "  global = ~/.codeium/windsurf/skills  |  project = ./.windsurf/skills" >&2
+else
+  echo "  global = ~/.$PROVIDER/skills  |  project = ./.${PROVIDER}/skills" >&2
+fi
 
 # Select skill(s)
 echo "" >&2
