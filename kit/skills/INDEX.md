@@ -47,6 +47,23 @@ All available skills in this kit, organized by category.
 
 ---
 
+## Engineering Practices
+> Cross-stack practices: security, API design, migrations, testing, observability, CI/CD
+
+| Skill | Description |
+|---|---|
+| `/eng-guide` | Choose the right engineering practice skill for your current problem |
+| `/eng-security-review` | Review code for OWASP ASVS security risks — injection, auth, secrets, PII |
+| `/eng-lgpd` | Ensure LGPD compliance — legal basis, retention, anonymization, data subject rights |
+| `/eng-api-design` | Design REST APIs with correct versioning, contracts, pagination, and status codes |
+| `/eng-db-migration` | Review database migrations for safety — breaking changes, locks, and zero-downtime risks |
+| `/eng-testing-strategy` | Apply the test pyramid — when to use unit, integration, and e2e tests |
+| `/eng-observability` | Implement structured logging, request correlation, and LGPD-safe log hygiene |
+| `/eng-twelve-factor` | Review applications against the twelve-factor methodology for cloud-native readiness |
+| `/eng-cicd-review` | Review CI/CD pipelines for quality gates, security scanning, and secrets hygiene |
+
+---
+
 ## Architecture Decision Records
 > ADR lifecycle management
 
@@ -74,3 +91,8 @@ All available skills in this kit, organized by category.
 - **Architecture decision?** → `/adr-writer` + `/architecture-review`
 - **Unsure which DDD pattern?** → `/ddd-guide`
 - **Unsure which CA pattern?** → `/ca-guide`
+- **Unsure which engineering practice?** → `/eng-guide`
+- **Security review?** → `/eng-security-review`
+- **LGPD / personal data?** → `/eng-lgpd`
+- **API design?** → `/eng-api-design`
+- **Database migration?** → `/eng-db-migration`
