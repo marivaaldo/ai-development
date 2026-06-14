@@ -22,7 +22,7 @@ Place skill files at:
 Use the install script to do this automatically:
 
 ```bash
-./scripts/install.sh --provider windsurf --skill adr-writer
+./scripts/install.sh --provider windsurf --scope project --skill adr-writer
 ```
 
 ### Global (available in all workspaces)
@@ -33,10 +33,10 @@ Place skill files at:
 ~/.codeium/windsurf/skills/<skill-name>/skill.md
 ```
 
-Pass `--global` to the install script:
+Pass `--scope global` to the install script:
 
 ```bash
-./scripts/install.sh --provider windsurf --global --skill adr-writer
+./scripts/install.sh --provider windsurf --scope global --skill adr-writer
 ```
 
 ## Workflows (commands)

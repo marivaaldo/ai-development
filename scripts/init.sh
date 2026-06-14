@@ -24,7 +24,20 @@ fi
 
 mkdir -p "$TARGET"
 
-rsync -a --exclude="README.md" --exclude=".gitkeep" "$EXAMPLE_DIR/" "$TARGET/"
+# Copy directory structure first
+find "$EXAMPLE_DIR" -mindepth 1 -type d | while read -r dir; do
+  rel="${dir#$EXAMPLE_DIR/}"
+  mkdir -p "$TARGET/$rel"
+done
+
+# Copy files, skipping README.md and .gitkeep at any depth
+find "$EXAMPLE_DIR" -type f \
+  ! -name "README.md" ! -name ".gitkeep" \
+  | while read -r file; do
+    rel="${file#$EXAMPLE_DIR/}"
+    mkdir -p "$TARGET/$(dirname "$rel")"
+    cp "$file" "$TARGET/$rel"
+  done
 
 echo "Project structure initialized at: $TARGET"
 
@@ -66,5 +79,5 @@ done
 echo ""
 echo "Next steps:"
 echo "  1. Review docs/guide.md for the maturity roadmap"
-echo "  2. Run install.sh to install skills: ./scripts/install.sh --scope project"
+echo "  2. Run install.sh to install skills: ./scripts/install.sh --provider <name> --skill all"
 echo "  3. Start with Phase 0 — don't create structure you don't need yet"
