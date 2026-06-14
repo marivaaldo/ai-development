@@ -56,7 +56,7 @@ The pyramid shape is intentional: invert it and you get a slow, fragile suite th
 A test that mocks everything it calls and then asserts only that mocks were called does not test behavior — it tests the implementation. Signs:
 
 - Every dependency is mocked
-- Assertions are `verify(mock.method()).wasCalled()` only
+- Assertions verify only that mock methods were called, not what was actually produced
 - The test would pass even if the business logic was deleted and replaced with the mock calls
 - Refactoring the internals (without changing behavior) breaks the test
 
@@ -95,6 +95,6 @@ Fix: test **observable outcomes** (return values, state changes, real side effec
 
 - Mocking the database in every test — queries that build wrong SQL pass with mocks
 - Writing E2E tests for every scenario (slow, fragile, hard to debug)
-- Asserting on `verify(mock.save())` without checking what was saved
+- Asserting only that a save/write method was called without checking what was actually saved
 - Not testing error and edge cases (only the happy path)
 - Treating code coverage as a proxy for test quality (100% coverage with mock-only tests = false confidence)

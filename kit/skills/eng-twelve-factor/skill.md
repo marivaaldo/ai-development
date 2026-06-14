@@ -44,25 +44,25 @@ The twelve-factor methodology (Heroku, 2011) describes practices for building so
 
 ### VI — Processes (stateless)
 - **Violation**: storing user sessions, file uploads, or cached computation in local process memory or the local filesystem
-- **Fix**: sessions in Redis or a DB; files in object storage (S3, GCS); local disk only for ephemeral scratch space
+- **Fix**: sessions in a distributed cache or external store; files in object storage; local disk only for ephemeral scratch space
 
 ### IX — Disposability
 - **Violation**: the app takes 60+ seconds to start; it does not handle `SIGTERM` gracefully; in-flight requests are dropped on shutdown
 - **Fix**: optimize cold start; listen for `SIGTERM`, drain in-flight requests, close DB connections, then exit
 
 ### X — Dev/prod parity
-- **Violation**: dev uses SQLite, prod uses PostgreSQL; dev skips message queues and calls services synchronously
-- **Fix**: use Docker Compose or similar to run the same backing services locally; keep versions aligned
+- **Violation**: dev uses a lightweight database, prod uses a different engine; dev skips message queues and calls services synchronously
+- **Fix**: run the same backing services locally (same engine, same major version) using a local environment tool; keep versions aligned
 
 ## Review checklist
 
 - [ ] **I**: single repository per service; no "monorepo one branch per environment"
-- [ ] **II**: all dependencies declared in a manifest (`package.json`, `requirements.txt`, `pom.xml`); no `pip install` in Dockerfiles without pinning
+- [ ] **II**: all dependencies declared in a versioned manifest; no unpinned installs in container definitions or CI scripts
 - [ ] **III**: no credentials or environment-specific config in source code or committed files
 - [ ] **IV**: all backing services (DB, cache, queue) are referenced via URLs from environment config
 - [ ] **VI**: no state stored in local memory or filesystem that must survive a process restart
 - [ ] **IX**: app starts in under 10 seconds; handles SIGTERM with graceful drain
-- [ ] **X**: dev environment uses the same database engine and major version as production
+- [ ] **X**: dev environment uses the same backing-service engine and major version as production
 - [ ] **XI**: app writes logs to stdout/stderr; no log file management code
 
 ## Common mistakes

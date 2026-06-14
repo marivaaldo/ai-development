@@ -23,13 +23,13 @@ Observability is the ability to understand what a system is doing from its exter
 
 ### The three pillars
 
-| Pillar | What it answers | Tool examples |
-|---|---|---|
-| **Logs** | What happened and when | Elasticsearch, Loki, CloudWatch Logs |
-| **Metrics** | How many times / how fast / how much | Prometheus, Datadog, CloudWatch Metrics |
-| **Traces** | Where time was spent in a request | Jaeger, Zipkin, AWS X-Ray, OpenTelemetry |
+| Pillar | What it answers |
+|---|---|
+| **Logs** | What happened and when |
+| **Metrics** | How many times / how fast / how much |
+| **Traces** | Where time was spent in a request |
 
-Use all three; they are complementary, not interchangeable.
+Use all three; they are complementary, not interchangeable. Choose tooling that fits your platform and budget — a log aggregation system, a metrics backend, and a distributed tracing tool.
 
 ### Structured logging
 
@@ -97,7 +97,7 @@ Use opaque identifiers (`user_id`, `order_id`) instead of personal data. For ful
 ## Common mistakes
 
 - Logging full request/response bodies in middleware without filtering sensitive fields
-- Using `console.log` / `print` instead of a structured logger
+- Using unstructured print statements instead of a structured logger
 - Not propagating the correlation ID into background jobs and async workers
 - Setting DEBUG level in production (floods storage, increases cost, may expose data)
 - Alerting on every ERROR log instead of on error rate thresholds (alert fatigue)

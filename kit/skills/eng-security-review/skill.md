@@ -47,7 +47,7 @@ A security review guided by OWASP Application Security Verification Standard (AS
 
 ### Secrets Management (ASVS V6)
 - Secrets (API keys, passwords, certificates) must never appear in source code, logs, or version control
-- Inject secrets via environment variables, a secrets manager (Vault, AWS Secrets Manager, Azure Key Vault), or a CI/CD secrets store
+- Inject secrets via environment variables, a dedicated secrets manager, or a CI/CD secrets store
 - Rotate secrets regularly; have a rotation runbook
 - Scan commits for secrets before merge (secret scanning in CI)
 

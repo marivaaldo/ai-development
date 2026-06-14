@@ -47,9 +47,7 @@ Checks third-party dependencies against known vulnerability databases (NVD, OSV,
 
 ### Secret scanning
 
-Detects credentials, API keys, and tokens committed to source code. Must run before code is merged. Never use `--no-verify` to bypass pre-commit hooks.
-
-> **Platform note (GitLab CI):** Use `include: template: Security/SAST.gitlab-ci.yml` and `template: Security/Dependency-Scanning.gitlab-ci.yml` for built-in scanning. Store secrets in **CI/CD Variables** (masked + protected); never use `variables:` in `.gitlab-ci.yml` for sensitive values. Use `rules: - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH` to gate production deployments. Use `needs:` to express explicit job dependencies and enable parallel execution. Protected branches should require a passing pipeline and at least one approval before merge.
+Detects credentials, API keys, and tokens committed to source code. Must run before code is merged. Never bypass pre-commit or pre-merge hooks to skip this check.
 
 ### Branch protection
 
@@ -74,7 +72,7 @@ Detects credentials, API keys, and tokens committed to source code. Must run bef
 
 ## Review checklist
 
-- [ ] No `allow_failure: true` on security scanning stages
+- [ ] No security scanning stages marked as non-blocking (allow-failure)
 - [ ] No secrets or tokens visible in pipeline YAML or job logs
 - [ ] Artifact version is pinned and traceable back to the commit that produced it
 - [ ] SAST and SCA scans are not skipped for "quick" pipelines
@@ -83,7 +81,7 @@ Detects credentials, API keys, and tokens committed to source code. Must run bef
 ## Common mistakes
 
 - Running security scans only nightly instead of on every merge request
-- Marking SAST as `allow_failure: true` to unblock a delivery (permanently accepted risk)
-- Storing secrets as plain-text `variables:` in `.gitlab-ci.yml` committed to the repo
+- Marking SAST as non-blocking to unblock a delivery (permanently accepted risk)
+- Storing secrets as plain-text variables in pipeline configuration files committed to the repo
 - Deploying from a developer's local machine to production, bypassing the pipeline
 - Not pinning the versions of CI pipeline images or actions (supply chain risk)

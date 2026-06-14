@@ -17,7 +17,7 @@ Database migrations are high-risk operations in production. This skill reviews m
 - Reviewing a pull request that includes a schema migration
 - Planning a migration on a large or high-traffic table
 - Evaluating whether a migration is safe to run without downtime
-- Reviewing a dacpac diff or ORM-generated migration script
+- Reviewing a schema diff or ORM-generated migration script
 
 ## Core concepts
 
@@ -41,25 +41,25 @@ Most DDL operations acquire table-level or access-exclusive locks that block rea
 
 | Operation | Lock risk |
 |---|---|
-| `ADD COLUMN` with default (nullable) | Low (PostgreSQL 11+: no rewrite) |
+| `ADD COLUMN` with default (nullable) | Low — most engines avoid a full table rewrite |
 | `ADD COLUMN NOT NULL` without default | High — rewrites entire table |
 | `ALTER COLUMN` type change | High — rewrites entire table |
-| `DROP COLUMN` | Low (logical only; no rewrite) |
-| `CREATE INDEX` | High — blocks writes during build |
-| `CREATE INDEX CONCURRENTLY` | Low — does not block reads/writes |
-| `ADD FOREIGN KEY` | Medium — validates existing data; use `NOT VALID` first |
+| `DROP COLUMN` | Low (logical only; no rewrite in most engines) |
+| `CREATE INDEX` (blocking) | High — blocks writes during build |
+| `CREATE INDEX` (non-blocking) | Low — does not block reads/writes; use if your engine supports it |
+| `ADD FOREIGN KEY` | Medium — validates existing data; some engines support deferred validation |
 
-> **Platform note (SQL Server / dacpac):** Operations flagged as `BlockOnPossibleDataLoss` in a dacpac diff indicate potential data loss. Never suppress this flag in production deployments. Column type changes, size reductions, and NOT NULL additions without defaults all trigger this flag. Use `WITH NOCHECK` for foreign key additions on large tables to avoid full table scans.
+> **Note:** The exact DDL syntax and locking behaviour vary by database engine. Check your engine's documentation for non-blocking DDL options (e.g., online index builds, deferred constraint validation) before running any of the high-risk operations above on a live table.
 
 ### Missing indexes
 
 - Every foreign key column should have an index (databases do not create these automatically in most engines)
 - Columns appearing in `WHERE`, `ORDER BY`, or `JOIN` clauses on large tables need indexes
-- Adding an index without `CONCURRENTLY` (PostgreSQL) or `ONLINE = ON` (SQL Server) blocks the table
+- Adding an index without the non-blocking option blocks the table during build
 
 ### Backfilling large tables
 
-- Never `UPDATE` millions of rows in a single migration — it holds locks, fills WAL/transaction logs, and may time out
+- Never `UPDATE` millions of rows in a single migration — it holds locks, fills the transaction log, and may time out
 - Backfill in batches (e.g., 1,000–10,000 rows per batch) with a loop and short sleeps
 - Consider a background job for very large tables instead of inline migration
 
@@ -67,19 +67,19 @@ Most DDL operations acquire table-level or access-exclusive locks that block rea
 
 - [ ] Migration is forward-only (no `DOWN` / rollback section)
 - [ ] Breaking changes (rename, type change, NOT NULL without default) use expand/contract pattern
-- [ ] New indexes use `CREATE INDEX CONCURRENTLY` (PostgreSQL) or `ONLINE = ON` (SQL Server)
+- [ ] New indexes use the non-blocking index build option supported by your database engine, if available
 - [ ] `ADD COLUMN NOT NULL` always has a DEFAULT or is split into add-nullable + backfill + add-constraint
 - [ ] Large-table backfills are batched, not a single bulk UPDATE
-- [ ] New foreign keys use deferred validation (`NOT VALID` + `VALIDATE CONSTRAINT` separately)
+- [ ] New foreign keys use deferred constraint validation if your engine supports it
 - [ ] Migration has been tested on a production-sized data sample
 
 ## Review checklist
 
 - [ ] No single migration drops or renames a column while the current app still references it
-- [ ] No `CREATE INDEX` without `CONCURRENTLY` / `ONLINE` on tables with existing data
+- [ ] No blocking index creation on tables with existing data
 - [ ] No `ALTER COLUMN` type changes that rewrite the table without a maintenance window
 - [ ] No unbounded UPDATE or DELETE in the migration script
-- [ ] dacpac diff has no suppressed `BlockOnPossibleDataLoss` flags
+- [ ] Tooling-reported data-loss warnings (if any) are reviewed, not suppressed
 
 ## Common mistakes
 
