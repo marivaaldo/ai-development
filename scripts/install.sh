@@ -135,6 +135,18 @@ install_codex() {
 
 # ── fragment append ───────────────────────────────────────────────────────────
 
+# Map a skill name to its fragment group (e.g. ddd-aggregate → ddd)
+skill_to_fragment_group() {
+  case "$1" in
+    adr-*|architecture-review) echo "adr" ;;
+    ddd-*)                     echo "ddd" ;;
+    ca-*)                      echo "clean-architecture" ;;
+    eng-*)                     echo "engineering" ;;
+    code-review)               echo "engineering" ;;
+    *)                         echo "$1" ;;
+  esac
+}
+
 # Append provider-specific fragments for a skill into the project's agent config file.
 # Idempotent: skips if the fragment marker is already present.
 append_fragments() {
@@ -145,7 +157,8 @@ append_fragments() {
   # fragments only make sense for project scope
   [ "$scope" = "project" ] || return 0
 
-  fragment="$FRAGMENTS_DIR/${skill_name}.${provider}.md"
+  fragment_group="$(skill_to_fragment_group "$skill_name")"
+  fragment="$FRAGMENTS_DIR/${fragment_group}.${provider}.md"
   [ -f "$fragment" ] || return 0
 
   case "$provider" in
@@ -168,17 +181,19 @@ append_fragments() {
   fi
 
   cat "$fragment" >> "$config_file"
-  echo "  ✓ Appended ADR fragment to $(basename "$config_file")" >&2
+  echo "  ✓ Appended fragment to $(basename "$config_file")" >&2
 }
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
 PROVIDER=""
 SKILL_ARG=""
+SCOPE=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --provider) PROVIDER="$2"; shift 2 ;;
     --skill)    SKILL_ARG="$2"; shift 2 ;;
+    --scope)    SCOPE="$2";    shift 2 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done
@@ -197,9 +212,11 @@ if [ -z "$PROVIDER" ]; then
   PROVIDER="$(prompt_choice "Provider" claude gemini codex windsurf)"
 fi
 
-# Ask scope
+# Ask scope if not supplied via --scope
 echo "" >&2
-SCOPE="$(prompt_choice "Install scope" global project)"
+if [ -z "$SCOPE" ]; then
+  SCOPE="$(prompt_choice "Install scope" global project)"
+fi
 if [ "$PROVIDER" = "windsurf" ]; then
   echo "  global = ~/.codeium/windsurf/skills  |  project = ./.windsurf/skills" >&2
 else

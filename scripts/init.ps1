@@ -74,5 +74,5 @@ foreach ($provider in @('claude', 'gemini', 'codex', 'windsurf')) {
 Write-Host ""
 Write-Host "Next steps:"
 Write-Host "  1. Review docs/guide.md for the maturity roadmap"
-Write-Host "  2. Run install.ps1 to install skills: .\scripts\install.ps1 --scope project"
+Write-Host "  2. Run install.ps1 to install skills: .\scripts\install.ps1 -Provider <name> -Skill all"
 Write-Host "  3. Start with Phase 0 — don't create structure you don't need yet"

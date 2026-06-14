@@ -2,7 +2,8 @@
 # Usage: .\scripts\install.ps1 [-Provider <claude|gemini|codex|windsurf>] [-Skill <name>]
 param(
     [string]$Provider = "",
-    [string]$Skill    = ""
+    [string]$Skill    = "",
+    [string]$Scope    = ""
 )
 
 $ErrorActionPreference = 'Stop'
@@ -102,12 +103,26 @@ function Install-Codex {
 
 # ── fragment append ───────────────────────────────────────────────────────────
 
+function Get-FragmentGroup {
+    param([string]$SkillName)
+    switch -Wildcard ($SkillName) {
+        'adr-*'             { return 'adr' }
+        'architecture-review' { return 'adr' }
+        'ddd-*'             { return 'ddd' }
+        'ca-*'              { return 'clean-architecture' }
+        'eng-*'             { return 'engineering' }
+        'code-review'       { return 'engineering' }
+        default             { return $SkillName }
+    }
+}
+
 function Append-Fragments {
     param([string]$SkillName, [string]$ProviderName, [string]$Scope)
 
     if ($Scope -ne 'project') { return }
 
-    $fragment = Join-Path $FragmentsDir "${SkillName}.${ProviderName}.md"
+    $group    = Get-FragmentGroup $SkillName
+    $fragment = Join-Path $FragmentsDir "${group}.${ProviderName}.md"
     if (-not (Test-Path $fragment)) { return }
 
     $configFile = switch ($ProviderName) {
@@ -131,7 +146,7 @@ function Append-Fragments {
     }
 
     Add-Content -Path $configFile -Value $fragmentContent
-    Write-Host "  [OK] Appended ADR fragment to $(Split-Path $configFile -Leaf)"
+    Write-Host "  [OK] Appended fragment to $(Split-Path $configFile -Leaf)"
 }
 
 # ── main ──────────────────────────────────────────────────────────────────────
@@ -150,9 +165,11 @@ if (-not $Provider) {
     $Provider = Prompt-Choice "Provider" @('claude','gemini','codex','windsurf')
 }
 
-# Ask scope
+# Ask scope if not supplied via -Scope
 Write-Host ""
-$Scope = Prompt-Choice "Install scope" @('global','project')
+if (-not $Scope) {
+    $Scope = Prompt-Choice "Install scope" @('global','project')
+}
 if ($Provider -eq 'windsurf') {
     Write-Host "  global = ~/.codeium/windsurf/skills  |  project = ./.windsurf/skills"
 } else {
