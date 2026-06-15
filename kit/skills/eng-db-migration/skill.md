@@ -23,7 +23,7 @@ Database migrations are high-risk operations in production. This skill reviews m
 
 ### Forward-only migrations
 
-Never use down/rollback migrations in production. Instead, write **forward-only** migrations that are safe to run incrementally. Roll forward with a fix, not backward to an unknown state.
+In production, never use down/rollback migrations. Write **forward-only** migrations that are safe to run incrementally. Roll forward with a fix, not backward to an unknown state. (Rollbacks are acceptable in local development and CI where the database is ephemeral.)
 
 ### The Expand/Contract pattern
 

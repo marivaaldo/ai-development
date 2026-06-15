@@ -14,9 +14,9 @@ Review an architectural proposal or existing system architecture.
 
 ## Before reviewing
 
-1. Read `adr/INDEX.md`
-2. Read headers of relevant ADRs
-3. Understand the bounded contexts and their boundaries
+1. Invoke `adr-reader` to load relevant ADRs using the token-efficient cascade protocol
+   (INDEX → headers of candidates → full body only if needed)
+2. Understand the bounded contexts and their boundaries from the ADRs and code structure
 
 ## What to evaluate
 

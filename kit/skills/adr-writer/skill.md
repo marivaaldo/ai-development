@@ -83,13 +83,13 @@ File name: `XXXX-<kebab-title>.md` (e.g. `0021-qdrant-vector-db.md`)
 
 ## After creating the ADR
 
-Append a new row to `adr/INDEX.md`:
+Append a new row at the end of the table in `adr/INDEX.md`:
 
 ```markdown
 | XXXX | Category | Title | One-line summary |
 ```
 
-Insert in numeric order. Do not regenerate the full file — append the row only.
+Do not regenerate the full file — append the row only.
 
 If `adr/INDEX.md` does not exist yet, create it:
 
@@ -100,6 +100,9 @@ If `adr/INDEX.md` does not exist yet, create it:
 |------|----------|-------|---------|
 | XXXX | Category | Title | Summary |
 ```
+
+> To regenerate the full INDEX from all ADR files (e.g., after a rename or bulk import),
+> use `./scripts/update-adr-index.sh` (or `.\scripts\update-adr-index.ps1` on Windows).
 
 > Provider note: editing a Markdown file is a standard file edit operation.
 > See `kit/references/` for how to edit files on your provider.

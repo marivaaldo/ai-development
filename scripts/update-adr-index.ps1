@@ -27,7 +27,7 @@ $header = @"
 
 Set-Content -Path $IndexFile -Value $header -NoNewline
 
-$files = Get-ChildItem -Path $AdrDir -Filter '*.md' |
+$files = Get-ChildItem -Path $AdrDir -Filter '*.md' -Recurse |
          Where-Object { $_.Name -ne 'INDEX.md' } |
          Sort-Object Name
 

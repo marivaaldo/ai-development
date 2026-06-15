@@ -78,6 +78,6 @@ done
 
 echo ""
 echo "Next steps:"
-echo "  1. Review docs/guide.md for the maturity roadmap"
+echo "  1. Review the maturity roadmap: docs/guide.md in the ai-development kit repo"
 echo "  2. Run install.sh to install skills: ./scripts/install.sh --provider <name> --skill all"
 echo "  3. Start with Phase 0 — don't create structure you don't need yet"

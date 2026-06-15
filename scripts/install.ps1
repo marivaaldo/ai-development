@@ -33,9 +33,10 @@ function List-Skills {
 
 function Detect-Providers {
     $found = @()
-    foreach ($cmd in @('claude','gemini','codex','windsurf')) {
+    foreach ($cmd in @('claude','gemini','codex')) {
         if (Get-Command $cmd -ErrorAction SilentlyContinue) { $found += $cmd }
     }
+    # Windsurf is an IDE and does not install a CLI binary — cannot be auto-detected
     return $found
 }
 
@@ -63,8 +64,8 @@ function Install-Claude {
 function Install-Gemini {
     param([string]$SkillName, [string]$Scope)
     $src = Join-Path $SkillsDir $SkillName
-    $dest = if ($Scope -eq 'global') { Join-Path $HOME '.gemini\skills\' + $SkillName }
-            else                     { Join-Path (Get-Location) '.gemini\skills\' + $SkillName }
+    $dest = if ($Scope -eq 'global') { Join-Path $HOME '.gemini' 'skills' $SkillName }
+            else                     { Join-Path (Get-Location) '.gemini' 'skills' $SkillName }
     New-Item -ItemType Directory -Path $dest -Force | Out-Null
     Copy-Item -Path "$src\*" -Destination $dest -Recurse -Force
     Write-Host "  [OK] Copied skill files to $dest"
@@ -90,8 +91,8 @@ function Install-Windsurf {
 function Install-Codex {
     param([string]$SkillName, [string]$Scope)
     $src = Join-Path $SkillsDir $SkillName
-    $dest = if ($Scope -eq 'global') { Join-Path $HOME '.codex\skills\' + $SkillName }
-            else                     { Join-Path (Get-Location) '.codex\skills\' + $SkillName }
+    $dest = if ($Scope -eq 'global') { Join-Path $HOME '.codex' 'skills' $SkillName }
+            else                     { Join-Path (Get-Location) '.codex' 'skills' $SkillName }
     New-Item -ItemType Directory -Path $dest -Force | Out-Null
     Copy-Item -Path "$src\*" -Destination $dest -Recurse -Force
     Write-Host "  [OK] Copied skill files to $dest"
@@ -117,6 +118,10 @@ function Get-FragmentGroup {
 }
 
 function Append-Fragments {
+    # Idempotent: skips if the fragment marker (first heading text) is already present.
+    # Limitation: if a fragment is updated and its first heading changes, re-running install
+    # will append the new version without removing the old one. Resolve manually by editing
+    # the config file to remove the outdated fragment block before re-running.
     param([string]$SkillName, [string]$ProviderName, [string]$Scope)
 
     if ($Scope -ne 'project') { return }
@@ -187,11 +192,12 @@ if ($Skill) {
     Write-Host "  - all"
     Write-Host ""
     $input = Read-Host "Skill to install (name or 'all')"
-    if ($input -eq 'all') {
-        $skillsToInstall = List-Skills
-    } else {
-        $skillsToInstall = @($input)
-    }
+    $skillsToInstall = @($input)
+}
+
+# Resolve "all" regardless of whether it came from -Skill flag or interactive input
+if ($skillsToInstall.Count -eq 1 -and $skillsToInstall[0] -eq 'all') {
+    $skillsToInstall = List-Skills
 }
 
 # Install

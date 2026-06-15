@@ -40,10 +40,10 @@ list_skills() {
 
 detect_providers() {
   detected=""
-  command -v claude    >/dev/null 2>&1 && detected="$detected claude"
-  command -v gemini    >/dev/null 2>&1 && detected="$detected gemini"
-  command -v codex     >/dev/null 2>&1 && detected="$detected codex"
-  command -v windsurf  >/dev/null 2>&1 && detected="$detected windsurf"
+  command -v claude  >/dev/null 2>&1 && detected="$detected claude"
+  command -v gemini  >/dev/null 2>&1 && detected="$detected gemini"
+  command -v codex   >/dev/null 2>&1 && detected="$detected codex"
+  # Windsurf is an IDE and does not install a CLI binary — cannot be auto-detected
   echo "$detected"
 }
 
@@ -70,8 +70,8 @@ install_claude() {
   mkdir -p "$(dirname "$skill_dest")"
   cp "$skill_src" "$skill_dest"
 
-  echo "  ✓ Installed to $cmd_dest"
-  echo "  ✓ Installed to $skill_dest"
+  echo "  ✓ Installed to $cmd_dest" >&2
+  echo "  ✓ Installed to $skill_dest" >&2
 }
 
 install_gemini() {
@@ -87,14 +87,14 @@ install_gemini() {
 
   mkdir -p "$dest"
   cp -r "$skill_src/." "$dest/"
-  echo "  ✓ Copied skill files to $dest"
-  echo ""
-  echo "  Manual step required for Gemini CLI:"
-  echo "  Reference the skill in your GEMINI.md:"
-  echo ""
-  echo "    @$dest/skill.md"
-  echo ""
-  echo "  See kit/references/gemini.md for details."
+  echo "  ✓ Copied skill files to $dest" >&2
+  echo "" >&2
+  echo "  Manual step required for Gemini CLI:" >&2
+  echo "  Reference the skill in your GEMINI.md:" >&2
+  echo "" >&2
+  echo "    @$dest/skill.md" >&2
+  echo "" >&2
+  echo "  See kit/references/gemini.md for details." >&2
 }
 
 install_windsurf() {
@@ -110,7 +110,7 @@ install_windsurf() {
 
   mkdir -p "$dest"
   cp -r "$skill_src/." "$dest/"
-  echo "  ✓ Installed to $dest"
+  echo "  ✓ Installed to $dest" >&2
 }
 
 install_codex() {
@@ -126,11 +126,11 @@ install_codex() {
 
   mkdir -p "$dest"
   cp -r "$skill_src/." "$dest/"
-  echo "  ✓ Copied skill files to $dest"
-  echo ""
-  echo "  Manual step required for Codex/Copilot:"
-  echo "  Register the skill in your plugin configuration."
-  echo "  See kit/references/codex.md for details."
+  echo "  ✓ Copied skill files to $dest" >&2
+  echo "" >&2
+  echo "  Manual step required for Codex/Copilot:" >&2
+  echo "  Register the skill in your plugin configuration." >&2
+  echo "  See kit/references/codex.md for details." >&2
 }
 
 # ── fragment append ───────────────────────────────────────────────────────────
@@ -148,7 +148,10 @@ skill_to_fragment_group() {
 }
 
 # Append provider-specific fragments for a skill into the project's agent config file.
-# Idempotent: skips if the fragment marker is already present.
+# Idempotent: skips if the fragment marker (first heading text) is already present.
+# Limitation: if a fragment is updated and its first heading changes, re-running install
+# will append the new version without removing the old one. Resolve manually by editing
+# the config file to remove the outdated fragment block before re-running.
 append_fragments() {
   skill_name="$1"
   provider="$2"
@@ -233,11 +236,12 @@ else
   echo "  - all" >&2
   echo "" >&2
   SKILL_INPUT="$(prompt_ask "Skill to install (name or 'all'):")"
-  if [ "$SKILL_INPUT" = "all" ]; then
-    skills_to_install="$(list_skills)"
-  else
-    skills_to_install="$SKILL_INPUT"
-  fi
+  skills_to_install="$SKILL_INPUT"
+fi
+
+# Resolve "all" regardless of whether it came from --skill flag or interactive input
+if [ "$skills_to_install" = "all" ]; then
+  skills_to_install="$(list_skills)"
 fi
 
 # Install

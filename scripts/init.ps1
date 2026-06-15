@@ -20,6 +20,13 @@ if (-not (Test-Path $ExampleDir -PathType Container)) {
 
 New-Item -ItemType Directory -Path $Target -Force | Out-Null
 
+# Create directory structure first (preserves empty directories, matching init.sh behaviour)
+Get-ChildItem -Path $ExampleDir -Recurse -Directory | ForEach-Object {
+    $rel  = $_.FullName.Substring($ExampleDir.Length + 1)
+    $dest = Join-Path $Target $rel
+    if (-not (Test-Path $dest)) { New-Item -ItemType Directory -Path $dest -Force | Out-Null }
+}
+
 Get-ChildItem -Path $ExampleDir -Recurse | Where-Object {
     -not $_.PSIsContainer -and
     $_.Name -ne 'README.md' -and
@@ -73,6 +80,6 @@ foreach ($provider in @('claude', 'gemini', 'codex', 'windsurf')) {
 
 Write-Host ""
 Write-Host "Next steps:"
-Write-Host "  1. Review docs/guide.md for the maturity roadmap"
+Write-Host "  1. Review the maturity roadmap: docs/guide.md in the ai-development kit repo"
 Write-Host "  2. Run install.ps1 to install skills: .\scripts\install.ps1 -Provider <name> -Skill all"
 Write-Host "  3. Start with Phase 0 — don't create structure you don't need yet"
