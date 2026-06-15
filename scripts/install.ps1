@@ -113,6 +113,7 @@ function Get-FragmentGroup {
         'ca-*'              { return 'clean-architecture' }
         'eng-*'             { return 'engineering' }
         'code-review'       { return 'engineering' }
+        'ai-*'              { return 'ai' }
         default             { return $SkillName }
     }
 }

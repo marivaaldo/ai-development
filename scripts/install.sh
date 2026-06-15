@@ -143,6 +143,7 @@ skill_to_fragment_group() {
     ca-*)                      echo "clean-architecture" ;;
     eng-*)                     echo "engineering" ;;
     code-review)               echo "engineering" ;;
+    ai-*)                      echo "ai" ;;
     *)                         echo "$1" ;;
   esac
 }

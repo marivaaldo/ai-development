@@ -24,6 +24,7 @@ All available skills in this kit, organized by category.
 | `/ddd-anti-corruption-layer` | Protect your domain model from external or legacy system concepts via translation |
 | `/ddd-specification` | Encapsulate business rules and query criteria as composable specification objects |
 | `/ddd-modules` | Organize domain code into cohesive modules that reflect the Ubiquitous Language |
+| `/ddd-context-map` | Document integration relationships between bounded contexts using Context Map patterns |
 
 ---
 
@@ -61,6 +62,21 @@ All available skills in this kit, organized by category.
 | `/eng-observability` | Implement structured logging, request correlation, and LGPD-safe log hygiene |
 | `/eng-twelve-factor` | Review applications against the twelve-factor methodology for cloud-native readiness |
 | `/eng-cicd-review` | Review CI/CD pipelines for quality gates, security scanning, and secrets hygiene |
+| `/eng-error-handling` | Design retry, circuit breaker, timeout, DLQ, and fallback strategies |
+| `/eng-performance-review` | Diagnose N+1 queries, missing indexes, ineffective caching, and slow endpoints |
+| `/eng-contract-testing` | Verify service integration contracts with consumer-driven tests and schema validation |
+| `/eng-runbook` | Write operational runbooks that an on-call engineer can follow under pressure |
+
+---
+
+## AI / LLM
+
+| Skill | Description |
+|---|---|
+| `/ai-guide` | Choose the right AI skill — prompt design, evaluation, or LLM integration |
+| `/ai-prompt-design` | Design effective prompts — system instructions, few-shot examples, output format, and guardrails |
+| `/ai-evaluation` | Measure LLM output quality with evals, LLM-as-judge, and regression suites |
+| `/ai-llm-integration` | Integrate LLM APIs safely — cost, latency, retries, streaming, and prompt injection defense |
 
 ---
 
@@ -87,12 +103,21 @@ All available skills in this kit, organized by category.
 
 - **New feature?** → `/ca-use-case` then `/ddd-aggregate`
 - **Integration with external system?** → `/ca-ports-adapters` + `/ddd-anti-corruption-layer`
+- **System landscape / context boundaries?** → `/ddd-context-map`
 - **Code review?** → `/code-review` + `/ca-solid`
 - **Architecture decision?** → `/adr-writer` + `/architecture-review`
 - **Unsure which DDD pattern?** → `/ddd-guide`
 - **Unsure which CA pattern?** → `/ca-guide`
 - **Unsure which engineering practice?** → `/eng-guide`
+- **Unsure which AI skill?** → `/ai-guide`
 - **Security review?** → `/eng-security-review`
 - **LGPD / personal data?** → `/eng-lgpd`
 - **API design?** → `/eng-api-design`
 - **Database migration?** → `/eng-db-migration`
+- **Distributed system resilience?** → `/eng-error-handling`
+- **Performance problem?** → `/eng-performance-review`
+- **Service contracts?** → `/eng-contract-testing`
+- **Writing an alert runbook?** → `/eng-runbook`
+- **LLM prompt?** → `/ai-prompt-design`
+- **LLM quality / evals?** → `/ai-evaluation`
+- **LLM API integration?** → `/ai-llm-integration`

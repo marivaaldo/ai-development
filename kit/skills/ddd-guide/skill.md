@@ -30,6 +30,7 @@ A decision guide for selecting the right Domain-Driven Design pattern from "Impl
 | `/ddd-anti-corruption-layer` | Integrating with a legacy or external system without polluting your model |
 | `/ddd-specification` | Encapsulating a reusable business rule for validation or querying |
 | `/ddd-modules` | Organizing packages within a bounded context |
+| `/ddd-context-map` | Documenting integration relationships between bounded contexts |
 
 ## Quick decision tree
 
@@ -54,6 +55,7 @@ A decision guide for selecting the right Domain-Driven Design pattern from "Impl
 **I need to integrate with an external system:**
 - External model must not leak in → `/ddd-anti-corruption-layer`
 - Two contexts need a clear integration contract → `/ddd-bounded-context`
+- Documenting all integration relationships in the system → `/ddd-context-map`
 
 **I need to organize or review code:**
 - Package/namespace structure → `/ddd-modules`
