@@ -99,6 +99,14 @@ All available skills in this kit, organized by category.
 
 ---
 
+## Project Management
+
+| Skill | Description |
+|---|---|
+| `/issue-writer` | Create context-rich GitHub/GitLab issues with enough information for AI agents to implement independently |
+
+---
+
 ## Quick reference: start here
 
 - **New feature?** → `/ca-use-case` then `/ddd-aggregate`
@@ -118,6 +126,7 @@ All available skills in this kit, organized by category.
 - **Performance problem?** → `/eng-performance-review`
 - **Service contracts?** → `/eng-contract-testing`
 - **Writing an alert runbook?** → `/eng-runbook`
+- **Creating a GitHub/GitLab issue for an AI agent?** → `/issue-writer`
 - **LLM prompt?** → `/ai-prompt-design`
 - **LLM quality / evals?** → `/ai-evaluation`
 - **LLM API integration?** → `/ai-llm-integration`
