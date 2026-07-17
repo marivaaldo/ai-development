@@ -103,12 +103,14 @@ All available skills in this kit, organized by category.
 
 | Skill | Description |
 |---|---|
+| `/user-story-writer` | Guide a brainstorming dialogue to write a User Story with Given/When/Then acceptance criteria |
 | `/issue-writer` | Create context-rich GitHub/GitLab issues with enough information for AI agents to implement independently |
 
 ---
 
 ## Quick reference: start here
 
+- **New feature idea to formalize?** → `/user-story-writer`
 - **New feature?** → `/ca-use-case` then `/ddd-aggregate`
 - **Integration with external system?** → `/ca-ports-adapters` + `/ddd-anti-corruption-layer`
 - **System landscape / context boundaries?** → `/ddd-context-map`
