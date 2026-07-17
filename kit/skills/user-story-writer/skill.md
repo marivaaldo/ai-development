@@ -1,6 +1,6 @@
 ---
 name: user-story-writer
-description: Guide a brainstorming dialogue to write a User Story (Como/Quero/Para que) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
+description: Guide a brainstorming dialogue to write a User Story (As a/I want/So that) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
 providers:
   claude: native
   gemini: see kit/references/gemini.md
@@ -84,33 +84,33 @@ Status: Draft | Approved
 
 ## Story
 
-**Como** [tipo de ator/usuário]
-**Quero** [ação/objetivo]
-**Para que** [benefício/motivação]
+**As a** [actor/persona type]
+**I want** [action/goal]
+**So that** [benefit/motivation]
 
 ## Context
 
-[Uma frase ou parágrafo curto sobre por que essa story existe agora — opcional]
+[One short sentence or paragraph on why this story exists now — optional]
 
 ## Acceptance Criteria
 
-### Scenario: [nome do cenário 1 — caminho feliz]
-- **Given** [contexto/estado inicial]
-- **When** [ação disparada]
-- **Then** [resultado esperado]
+### Scenario: [scenario 1 name — happy path]
+- **Given** [initial context/state]
+- **When** [action taken]
+- **Then** [expected result]
 
-### Scenario: [nome do cenário 2 — erro/borda]
-- **Given** [contexto]
-- **When** [ação]
-- **Then** [resultado]
+### Scenario: [scenario 2 name — error/edge case]
+- **Given** [context]
+- **When** [action]
+- **Then** [result]
 
 ## Out of Scope
 
-- [O que fica deliberadamente fora dessa story]
+- [What is deliberately excluded from this story]
 
 ## Open Questions
 
-- [Dúvidas não resolvidas durante o brainstorming, se houver]
+- [Unresolved questions from the brainstorming session, if any]
 ```
 
 Omit the `Open Questions` section entirely when there are no pending questions — do not fill it with invented content.

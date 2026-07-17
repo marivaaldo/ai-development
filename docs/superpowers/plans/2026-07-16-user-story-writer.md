@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a new kit skill, `user-story-writer`, that guides a conversational brainstorming dialogue to produce a User Story (Como/Quero/Para que) with Given/When/Then acceptance criteria, saved via a new `kit/templates/user-story.md` template.
+**Goal:** Add a new kit skill, `user-story-writer`, that guides a conversational brainstorming dialogue to produce a User Story (As a/I want/So that) with Given/When/Then acceptance criteria, saved via a new `kit/templates/user-story.md` template.
 
 **Architecture:** This is a content-only kit repo (no build system, no test runner — per `CLAUDE.md`). "Verification" here means: the new skill file and template are well-formed per the kit's existing conventions, `kit/skills/INDEX.md` is updated consistently, and `scripts/install.sh` (the only executable logic touched by this change) correctly picks up and installs the new skill end-to-end.
 
@@ -29,33 +29,33 @@ Status: Draft | Approved
 
 ## Story
 
-**Como** [tipo de ator/usuário]
-**Quero** [ação/objetivo]
-**Para que** [benefício/motivação]
+**As a** [actor/persona type]
+**I want** [action/goal]
+**So that** [benefit/motivation]
 
 ## Context
 
-[Uma frase ou parágrafo curto sobre por que essa story existe agora — opcional]
+[One short sentence or paragraph on why this story exists now — optional]
 
 ## Acceptance Criteria
 
-### Scenario: [nome do cenário 1 — caminho feliz]
-- **Given** [contexto/estado inicial]
-- **When** [ação disparada]
-- **Then** [resultado esperado]
+### Scenario: [scenario 1 name — happy path]
+- **Given** [initial context/state]
+- **When** [action taken]
+- **Then** [expected result]
 
-### Scenario: [nome do cenário 2 — erro/borda]
-- **Given** [contexto]
-- **When** [ação]
-- **Then** [resultado]
+### Scenario: [scenario 2 name — error/edge case]
+- **Given** [context]
+- **When** [action]
+- **Then** [result]
 
 ## Out of Scope
 
-- [O que fica deliberadamente fora dessa story]
+- [What is deliberately excluded from this story]
 
 ## Open Questions
 
-- [Dúvidas não resolvidas durante o brainstorming, se houver]
+- [Unresolved questions from the brainstorming session, if any]
 ```
 
 - [ ] **Step 2: Verify the file was created correctly**
@@ -82,7 +82,7 @@ git commit -m "feat: add user-story.md template"
 ```markdown
 ---
 name: user-story-writer
-description: Guide a brainstorming dialogue to write a User Story (Como/Quero/Para que) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
+description: Guide a brainstorming dialogue to write a User Story (As a/I want/So that) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
 providers:
   claude: native
   gemini: see kit/references/gemini.md
@@ -166,33 +166,33 @@ Status: Draft | Approved
 
 ## Story
 
-**Como** [tipo de ator/usuário]
-**Quero** [ação/objetivo]
-**Para que** [benefício/motivação]
+**As a** [actor/persona type]
+**I want** [action/goal]
+**So that** [benefit/motivation]
 
 ## Context
 
-[Uma frase ou parágrafo curto sobre por que essa story existe agora — opcional]
+[One short sentence or paragraph on why this story exists now — optional]
 
 ## Acceptance Criteria
 
-### Scenario: [nome do cenário 1 — caminho feliz]
-- **Given** [contexto/estado inicial]
-- **When** [ação disparada]
-- **Then** [resultado esperado]
+### Scenario: [scenario 1 name — happy path]
+- **Given** [initial context/state]
+- **When** [action taken]
+- **Then** [expected result]
 
-### Scenario: [nome do cenário 2 — erro/borda]
-- **Given** [contexto]
-- **When** [ação]
-- **Then** [resultado]
+### Scenario: [scenario 2 name — error/edge case]
+- **Given** [context]
+- **When** [action]
+- **Then** [result]
 
 ## Out of Scope
 
-- [O que fica deliberadamente fora dessa story]
+- [What is deliberately excluded from this story]
 
 ## Open Questions
 
-- [Dúvidas não resolvidas durante o brainstorming, se houver]
+- [Unresolved questions from the brainstorming session, if any]
 ```
 
 Omit the `Open Questions` section entirely when there are no pending questions — do not fill it with invented content.
@@ -222,7 +222,7 @@ Expected:
 ```
 ---
 name: user-story-writer
-description: Guide a brainstorming dialogue to write a User Story (Como/Quero/Para que) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
+description: Guide a brainstorming dialogue to write a User Story (As a/I want/So that) with Given/When/Then acceptance criteria — one question at a time, escalating to /ca-use-case when the flow proves too complex for a simple story
 providers:
   claude: native
   gemini: see kit/references/gemini.md
@@ -339,5 +339,5 @@ rm -rf "$SCRATCH"
 ## Self-Review Checklist (run before handing off)
 
 - **Spec coverage:** Task 1 covers the template; Task 2 covers all 6 phases from the spec plus the Error Reference and "What NOT to do" sections; Task 3 covers the INDEX.md changes; Task 4 covers the install.sh pickup behavior. No spec section left uncovered.
-- **Placeholder scan:** No `TBD`/`TODO` in any task step; the `[Feature Name]`, `[tipo de ator/usuário]`, etc. placeholders are intentional template content, not plan placeholders.
+- **Placeholder scan:** No `TBD`/`TODO` in any task step; the `[Feature Name]`, `[actor/persona type]`, etc. placeholders are intentional template content, not plan placeholders.
 - **Type/name consistency:** `user-story-writer` (skill name), `kit/templates/user-story.md` (template path), `specs/<feature-slug>.md` (output path) are consistent across Task 1, Task 2, and the spec.
