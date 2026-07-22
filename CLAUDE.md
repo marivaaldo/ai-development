@@ -42,7 +42,7 @@ For **Gemini/Codex/Windsurf**: copies the skill directory into the provider's sk
 
 ### Fragments
 
-`kit/fragments/<skill>.<provider>.md` are appended to the project's agent config file (`CLAUDE.md`, `GEMINI.md`, `.windsurfrules`, `AGENTS.md`) during project-scope installs. Appending is idempotent — skipped if the fragment's first heading is already present.
+`kit/fragments/<skill>.<provider>.md` are appended to the project's agent config file (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) during project-scope installs. Appending is idempotent — skipped if the fragment's first heading is already present.
 
 ### Example project
 

@@ -48,7 +48,7 @@ function Append-ProviderFragments {
     $configFile = switch ($Provider) {
         'claude'   { Join-Path $Target 'CLAUDE.md' }
         'gemini'   { Join-Path $Target 'GEMINI.md' }
-        'windsurf' { Join-Path $Target '.windsurfrules' }
+        'windsurf' { Join-Path $Target 'AGENTS.md' }
         'codex'    { Join-Path $Target 'AGENTS.md' }
         default    { return }
     }

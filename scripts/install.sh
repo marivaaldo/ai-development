@@ -168,7 +168,7 @@ append_fragments() {
   case "$provider" in
     claude)   config_file="$(pwd)/CLAUDE.md" ;;
     gemini)   config_file="$(pwd)/GEMINI.md" ;;
-    windsurf) config_file="$(pwd)/.windsurfrules" ;;
+    windsurf) config_file="$(pwd)/AGENTS.md" ;;
     codex)    config_file="$(pwd)/AGENTS.md" ;;
     *)        return 0 ;;
   esac

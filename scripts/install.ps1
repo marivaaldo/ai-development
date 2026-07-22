@@ -134,7 +134,7 @@ function Append-Fragments {
     $configFile = switch ($ProviderName) {
         'claude'   { Join-Path (Get-Location) 'CLAUDE.md' }
         'gemini'   { Join-Path (Get-Location) 'GEMINI.md' }
-        'windsurf' { Join-Path (Get-Location) '.windsurfrules' }
+        'windsurf' { Join-Path (Get-Location) 'AGENTS.md' }
         'codex'    { Join-Path (Get-Location) 'AGENTS.md' }
         default    { return }
     }

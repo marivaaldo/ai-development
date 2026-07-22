@@ -47,7 +47,7 @@ append_provider_fragments() {
   case "$provider" in
     claude)   config_file="$TARGET/CLAUDE.md" ;;
     gemini)   config_file="$TARGET/GEMINI.md" ;;
-    windsurf) config_file="$TARGET/.windsurfrules" ;;
+    windsurf) config_file="$TARGET/AGENTS.md" ;;
     codex)    config_file="$TARGET/AGENTS.md" ;;
     *) return 0 ;;
   esac
