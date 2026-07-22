@@ -1,5 +1,5 @@
 # Installs skills from kit/skills/ into the appropriate location for a given AI provider.
-# Usage: .\scripts\install.ps1 [-Provider <claude|gemini|codex|windsurf>] [-Skill <name>]
+# Usage: .\scripts\install.ps1 [-Provider <claude|gemini|codex|windsurf>] [-Skill "<name> [<name> ...]"]
 param(
     [string]$Provider = "",
     [string]$Skill    = "",
@@ -186,14 +186,14 @@ if ($Provider -eq 'windsurf') {
 Write-Host ""
 $skillsToInstall = @()
 if ($Skill) {
-    $skillsToInstall = @($Skill)
+    $skillsToInstall = @($Skill -split '\s+' | Where-Object { $_ })
 } else {
     Write-Host "Available skills:"
     List-Skills | ForEach-Object { Write-Host "  - $_" }
     Write-Host "  - all"
     Write-Host ""
-    $input = Read-Host "Skill to install (name or 'all')"
-    $skillsToInstall = @($input)
+    $input = Read-Host "Skill to install (name or 'all', space-separated for multiple)"
+    $skillsToInstall = @($input -split '\s+' | Where-Object { $_ })
 }
 
 # Resolve "all" regardless of whether it came from -Skill flag or interactive input

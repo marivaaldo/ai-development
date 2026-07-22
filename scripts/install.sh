@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Installs skills from kit/skills/ into the appropriate location for a given AI provider.
-# Usage: ./scripts/install.sh [--provider <claude|gemini|codex|windsurf>] [--skill <name>]
+# Usage: ./scripts/install.sh [--provider <claude|gemini|codex|windsurf>] [--skill "<name> [<name> ...]"]
 
 set -e
 
@@ -236,7 +236,7 @@ else
   list_skills | while read -r s; do printf '  - %s\n' "$s" >&2; done
   echo "  - all" >&2
   echo "" >&2
-  SKILL_INPUT="$(prompt_ask "Skill to install (name or 'all'):")"
+  SKILL_INPUT="$(prompt_ask "Skill to install (name or 'all', space-separated for multiple):")"
   skills_to_install="$SKILL_INPUT"
 fi
 
