@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Regenerates adr/INDEX.md from the headers of all ADR files.
 # Run from the root of a project that uses the ADR pattern.
-# Usage: ./scripts/update-adr-index.sh [adr-dir]
+# Usage: update-adr-index.sh [adr-dir]
 #
 # Reads the first 25 lines of each ADR file to extract:
 #   Title, Category, Summary

@@ -102,7 +102,8 @@ If `adr/INDEX.md` does not exist yet, create it:
 ```
 
 > To regenerate the full INDEX from all ADR files (e.g., after a rename or bulk import),
-> use `./scripts/update-adr-index.sh` (or `.\scripts\update-adr-index.ps1` on Windows).
+> use the `update-adr-index.sh` script bundled in this skill's `scripts/` directory
+> (`update-adr-index.ps1` on Windows).
 
 > Provider note: editing a Markdown file is a standard file edit operation.
 > See `kit/references/` for how to edit files on your provider.

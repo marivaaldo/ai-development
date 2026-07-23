@@ -52,7 +52,8 @@ detect_providers() {
 install_claude() {
   skill_name="$1"
   scope="$2"
-  skill_src="$SKILLS_DIR/$skill_name/skill.md"
+  skill_dir="$SKILLS_DIR/$skill_name"
+  skill_src="$skill_dir/skill.md"
 
   if [ "$scope" = "global" ]; then
     base="$HOME/.claude"
@@ -66,12 +67,15 @@ install_claude() {
   cp "$skill_src" "$cmd_dest"
 
   # skills/ → discovery via superpowers Skill tool
-  skill_dest="$base/skills/$skill_name/skill.md"
-  mkdir -p "$(dirname "$skill_dest")"
-  cp "$skill_src" "$skill_dest"
+  skill_dest_dir="$base/skills/$skill_name"
+  mkdir -p "$skill_dest_dir"
+  cp "$skill_src" "$skill_dest_dir/skill.md"
+
+  # copy any bundled resources (e.g. scripts/) alongside skill.md
+  find "$skill_dir" -mindepth 1 -maxdepth 1 ! -name 'skill.md' -exec cp -r {} "$skill_dest_dir/" \;
 
   echo "  ✓ Installed to $cmd_dest" >&2
-  echo "  ✓ Installed to $skill_dest" >&2
+  echo "  ✓ Installed to $skill_dest_dir/skill.md" >&2
 }
 
 install_gemini() {

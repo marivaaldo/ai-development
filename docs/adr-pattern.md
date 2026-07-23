@@ -42,7 +42,8 @@ Every project using this pattern maintains an `adr/INDEX.md`:
 ```
 
 The index is updated inline by the `adr-writer` skill after every new ADR.
-The `scripts/update-adr-index.sh` script regenerates it from scratch when needed.
+The `update-adr-index.sh` script (installed with the `adr-writer` skill, under its
+`scripts/` directory) regenerates it from scratch when needed.
 
 ## Token-efficient read strategy for AI agents
 

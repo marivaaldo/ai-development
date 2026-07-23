@@ -44,7 +44,8 @@ function Detect-Providers {
 
 function Install-Claude {
     param([string]$SkillName, [string]$Scope)
-    $src  = Join-Path $SkillsDir "$SkillName\skill.md"
+    $skillDir = Join-Path $SkillsDir $SkillName
+    $src  = Join-Path $skillDir 'skill.md'
     $base = if ($Scope -eq 'global') { Join-Path $HOME '.claude' }
             else                     { Join-Path (Get-Location) '.claude' }
 
@@ -55,10 +56,15 @@ function Install-Claude {
     Write-Host "  [OK] Installed to $cmdDest"
 
     # skills/ → discovery via superpowers Skill tool
-    $skillDest = Join-Path $base "skills\$SkillName\skill.md"
-    New-Item -ItemType Directory -Path (Split-Path $skillDest) -Force | Out-Null
-    Copy-Item -Path $src -Destination $skillDest -Force
-    Write-Host "  [OK] Installed to $skillDest"
+    $skillDestDir = Join-Path $base "skills\$SkillName"
+    New-Item -ItemType Directory -Path $skillDestDir -Force | Out-Null
+    Copy-Item -Path $src -Destination (Join-Path $skillDestDir 'skill.md') -Force
+    Write-Host "  [OK] Installed to $skillDestDir\skill.md"
+
+    # copy any bundled resources (e.g. scripts/) alongside skill.md
+    Get-ChildItem -Path $skillDir -Exclude 'skill.md' | ForEach-Object {
+        Copy-Item -Path $_.FullName -Destination $skillDestDir -Recurse -Force
+    }
 }
 
 function Install-Gemini {

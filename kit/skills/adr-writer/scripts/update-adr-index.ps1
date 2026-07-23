@@ -1,6 +1,6 @@
 # Regenerates adr/INDEX.md from the headers of all ADR files.
 # Run from the root of a project that uses the ADR pattern.
-# Usage: .\scripts\update-adr-index.ps1 [adr-dir]
+# Usage: update-adr-index.ps1 [adr-dir]
 #
 # Reads the first 25 lines of each ADR file to extract:
 #   Title, Category, Summary
